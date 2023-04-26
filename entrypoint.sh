@@ -35,6 +35,9 @@ docker_setup_env() {
     file_env 'MYSQL_PASS' $MYSQL_DEFAULT_PASS
     file_env 'MYSQL_USER' $MYSQL_DEFAULT_USER
     file_env 'MYSQL_PORT' $MYSQL_DEFAULT_PORT
+
+    file_env 'HTTP_API' $HTTP_API
+    file_env 'HTTP_API_KEY' $HTTP_API_KEY
 }
 
 docker_setup_env
@@ -43,6 +46,13 @@ docker_setup_env
 [ "$1" = "--help" ] || [ "$1" = "--version" ] && exec pdns_server $1
 # treat everything except -- as exec cmd
 [ "${1:0:2}" != "--" ] && exec "$@"
+
+if $HTTP_API; then
+  sed -r -i "s/^webserver=.*/webserver=yes/g" /etc/pdns/pdns.conf
+  sed -r -i "s/^[# ]*api-key=.*/api-key=${HTTP_API_KEY}/g" /etc/pdns/pdns.conf
+else
+  sed -r -i "s/^webserver=.*/webserver=no/g" /etc/pdns/pdns.conf
+fi
 
 if $MYSQL_AUTOCONF ; then
   # Set MySQL Credentials in pdns.conf

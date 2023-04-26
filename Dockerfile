@@ -7,7 +7,9 @@ ENV POWERDNS_VERSION=4.7.3 \
     MYSQL_DEFAULT_PORT="3306" \
     MYSQL_DEFAULT_USER="root" \
     MYSQL_DEFAULT_PASS="root" \
-    MYSQL_DEFAULT_DB="pdns"
+    MYSQL_DEFAULT_DB="pdns" \
+    HTTP_API=false \
+    HTTP_API_KEY="98374zuegtrhdjfbjloet45uzrtkjgl34zbe"
 
 RUN apk --update add bash libpq sqlite-libs libstdc++ libgcc mariadb-client mariadb-connector-c lua-dev curl-dev && \
     apk add --virtual build-deps \
